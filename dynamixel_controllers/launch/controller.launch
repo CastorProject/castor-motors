@@ -26,23 +26,44 @@
     </node-->
 
 <!-- Start tilt joint controller -->
-    <rosparam file="$(find dynamixel_controllers)/config/controllers.yaml" command="load"/>
+    <rosparam file="$(find dynamixel_controllers)/config/head_arm_controller.yaml" command="load"/>
     <node name="controller_spawner" pkg="dynamixel_controllers" type="controller_spawner.py"
           args="--manager=dynamixel_controller_manager
-                --port=pan_tilt_port
-                joint1_controller"
+                --port=dxl_tty1
+                neck_joint_controller
+		right_shoulder_roll_controller
+		right_shoulder_pitch_controller
+		left_shoulder_roll_controller
+		left_shoulder_pitch_controller"
           output="screen"/>
 	
 
 <!-- Start joints trajectory controller controller -->
-    <rosparam file="$(find dynamixel_motors_driver)/config/joint_trajectory_controller.yaml" command="load"/>
-    <node name="controller_spawner_meta" pkg="dynamixel_controllers" type="controller_spawner.py"
+    <rosparam file="$(find dynamixel_controllers)/config/joint_trajectory_controller.yaml" command="load"/>
+    <node name="rightarm_metacontroller" pkg="dynamixel_controllers" type="controller_spawner.py"
           args="--manager=dynamixel_controller_manager
                 --type=meta
-                f_arm_controller
-                joint1_controller
+                right_arm_controller
+		right_shoulder_roll_controller
+		right_shoulder_pitch_controller
                "
           output="screen"/>
-   
+
+   <node name="leftarm_metacontroller" pkg="dynamixel_controllers" type="controller_spawner.py"
+          args="--manager=dynamixel_controller_manager
+                --type=meta
+                left_arm_controller
+		left_shoulder_roll_controller
+		left_shoulder_pitch_controller
+               "
+          output="screen"/>
+
+   <node name="head_metacontroller" pkg="dynamixel_controllers" type="controller_spawner.py"
+          args="--manager=dynamixel_controller_manager
+                --type=meta
+                head_controller
+		neck_joint_controller
+               "
+          output="screen"/>
 
 </launch>

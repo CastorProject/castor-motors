@@ -42,3 +42,28 @@ right_shoulder_pitch_controller:
         min: 70
         max: 950
 #------------------left arm actuation---------------------
+left_shoulder_roll_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: right_shoulder_roll_joint
+    joint_speed: 2.0
+    motor:
+        id: 2
+        init: 550
+        min: 120  
+        max: 550
+
+left_shoulder_pitch_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: right_shoulder_pitch_joint
+    joint_speed: 2.0
+    motor:
+        id: 3
+        init: 870
+        min: 70
+        max: 950
