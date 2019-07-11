@@ -1,0 +1,23 @@
+#device config
+#device_name: /dev/ttyUSB0
+#baud_rate: 1000000
+#scan_range: 10
+#profile_velocity: 200
+#profile_acceleration: 50
+#motor network id_list
+#motor step resolution
+#step_res: 0.29 # degrees/step  (The range of the value is 0~1023 (0x3FF) ref AX-12A)
+#motor_reference: AX-12A
+#articular ranges for dynamixel motors
+origin:
+  head: 350
+  right_shoulder: 550
+  right_elbow: 870
+  left_shoulder: 370
+  left_elbow: 370
+angle_rate:
+  head: 1 #
+  right_shoulder: 550 #355/90
+  right_elbow: 950    #650/90
+  left_shoulder: 370
+  left_elbow: 75

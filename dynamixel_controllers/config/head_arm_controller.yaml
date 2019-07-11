@@ -1,0 +1,44 @@
+# Publish all joint states -----------------------------------
+#joint_state_controller:
+#  type: joint_state_controller/JointStateController
+#  publish_rate: 50
+#------------------head actuation---------------------
+neck_joint_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: neck_joint
+    joint_speed: 2.0
+    motor:
+        id: 1
+        init: 350
+        min: 50
+        max: 650
+#------------------right arm actuation---------------------
+right_shoulder_roll_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: right_shoulder_roll_joint
+    joint_speed: 2.0
+    motor:
+        id: 4
+        init: 550
+        min: 120  
+        max: 550
+
+right_shoulder_pitch_controller:
+    controller:
+        package: dynamixel_controllers
+        module: joint_position_controller
+        type: JointPositionController
+    joint_name: right_shoulder_pitch_joint
+    joint_speed: 2.0
+    motor:
+        id: 5
+        init: 870
+        min: 70
+        max: 950
+#------------------left arm actuation---------------------
