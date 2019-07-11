@@ -1,2 +1,4 @@
-# castor-motors
-Metapackage that contains motor drivers for servo and dynamixel
+dynamixel_motor
+===============
+
+ROS stack for interfacing with Robotis Dynamixel line of servo motors.
