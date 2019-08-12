@@ -1,6 +1,6 @@
 <!-- -*- mode: XML -*- -->
 <launch>
-  <arg name="usb_port"                default="/dev/ttyUSB0"/>
+  <arg name="usb_port"                default="/dev/dmx_serial"/>
   <arg name="dxl_baud_rate"           default="1000000"/>
   <arg name="namespace"               default=""/>
 
@@ -10,7 +10,7 @@
 
 
   <!--load config file to configurate the dmx_firmware /-->
-  <param name="dynamixel_info"          value="$(find dynamixel_controllers)/config/castor_dmx.yaml"/>
+  <!--param name="dynamixel_info"          value="$(find dynamixel_controllers)/config/castor_dmx.yaml"/-->
   <!--rosparam file="$(find dynamixel_workbench_controllers)/config/castor_dmx.yaml" command="load"/-->
   <!--launch dynamixel controllers node/-->
   <!--node name="dmx_controller" pkg="dynamixel_workbench_controllers" type="dynamixel_workbench_controllers"
@@ -33,7 +33,9 @@
                 neck_joint_controller
 		right_shoulder_roll_controller
 		right_shoulder_pitch_controller
+		right_elbow_pitch_controller
 		left_shoulder_roll_controller
+		left_elbow_pitch_controller
 		left_shoulder_pitch_controller"
           output="screen"/>
 	
@@ -45,7 +47,8 @@
                 --type=meta
                 right_arm_controller
 		right_shoulder_roll_controller
-		right_shoulder_pitch_controller
+	        right_shoulder_pitch_controller
+		right_elbow_pitch_controller
                "
           output="screen"/>
 
@@ -55,6 +58,7 @@
                 left_arm_controller
 		left_shoulder_roll_controller
 		left_shoulder_pitch_controller
+		left_elbow_pitch_controller
                "
           output="screen"/>
 

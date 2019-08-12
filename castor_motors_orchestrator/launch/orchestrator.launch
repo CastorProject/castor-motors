@@ -1,0 +1,13 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+	<!--dynamixel launcher/-->
+	<include file="$(find dynamixel_controllers)/launch/controller_manager.launch"/>
+	<include file="$(find dynamixel_controllers)/launch/controller.launch"/>
+	
+	<!--ros-onohat servo controllers launcher/-->
+	<include file="$(find opsoro_workbench_onohat)/launch/onohat_base.launch"/>
+	
+	<node name="eyes_behavior" pkg="castor_eyes" type="eyes_behavior.py"/>
+	<!--node name="motor_behavior" pkg="dynamixel_controllers" type="motor_publisher.py"/-->
+
+</launch>
