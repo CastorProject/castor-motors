@@ -44,10 +44,10 @@ class arm_publisher(object):
 			d.data = 0.5
 			self.head_state = 1				
 		elif self.head_state == 1:
-			d.data = -0.5
+			d.data = 0
 			self.head_state = 2
 		elif self.head_state == 2:
-			d.data = 0
+			d.data = -0.5
 			self.head_state = 0
 		else:
 			d.data = 0
@@ -79,10 +79,14 @@ class arm_publisher(object):
 		while not rospy.is_shutdown():
 			d = self.get_head_trajectory()
 			self.pub[0].publish(d)
+			#self.rate.sleep()
 			d = self.get_arm_trajectory()
 			self.pub[2].publish(d)
+			#self.rate.sleep()
 			self.pub[3].publish(d)
+			#self.rate.sleep()
 			self.pub[5].publish(d)
+			#self.rate.sleep()
 			self.pub[6].publish(d)								
 			self.rate.sleep()
 
