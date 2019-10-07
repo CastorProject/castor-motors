@@ -10,5 +10,5 @@
 	<node name="eyes_behavior" pkg="castor_eyes" type="eyes_manager.py"/>	
 	<node name="facial_behavior" pkg="botbuilder_workbench" type="face_motor.py"/>
 	<node name="motor_behavior" pkg="dynamixel_controllers" type="motor_manager.py"/>
-	<node name="telegram" pkg="castor-telegram" type="telegram_interface.py"/>
+	<node name="telegram" pkg="castor_telegram" type="telegram_interface.py"/>
 </launch>

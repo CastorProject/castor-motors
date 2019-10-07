@@ -14,4 +14,4 @@ joint1_controller:
         id: 1
         init: 350
         min: 50
-        max: 650
+	max: 650
