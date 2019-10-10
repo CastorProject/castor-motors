@@ -21,7 +21,6 @@ class dynamixelManagerNode(object):
 		self.motorPositionSub = rospy.Subscriber('/dMotorsPosition', Float64, self.callbackMotorsPosition)
 		self.dynamixelMotorSub = rospy.Subscriber('/dMotors', String, self.callbackDynamixelMotor)
 		return
-		
 
 	def initPublishers(self):
 		self.neckPub = rospy.Publisher("/neck_joint_controller/command", Float64, queue_size = 10)
@@ -41,21 +40,68 @@ class dynamixelManagerNode(object):
 		self.words = String()
 		self.stopTalk = Bool()
 		self.emotion = String()
-		self.changeMovement = False	
-		self.changeMotor = False	
+		self.changeMovement = False
+		self.changeMotor = False
+		self.wordsDict = {
+					"greet": "saludo",
+					"bye": "despedir",
+					"wave": "",
+					"nicetomeet": "mealegro",
+					"howru": "comoestas",
+					"fine": "biengracias",
+					"guess": "adivina",
+					"tryagain": "intentaotravez",
+					"play": "quieresjugar",
+					"nice": "muybien",
+					"myHead": "estaesmicabeza",
+					"wheresMyHead": "dondeestacabeza",
+					"wheresUHead": "dondeestatucabeza",
+					"pointHead": "tocarcabeza",
+					"myEyes": "estossonmisojos",
+					"wheresMyEyes": "dondeestanojos",
+					"wheresUEyes": "dondeestantusojos",
+					"pointEyes": "senialarojos",
+					"myNose": "estaesminariz",
+					"wheresMyNose": "dondeestanariz",
+					"wheresUNose": "dondeestatunariz",
+					"pointNose": "senialarnariz",
+					"myMouth": "estaesmiboca",
+					"wheresMyMouth": "dondeestaboca",
+					"wheresUMouth": "dondeestatuboca",
+					"pointMouth": "senialarboca",
+					"neutral": ""
+				 }
+
 		self.mainMovementsDict = {
 						"greet": self.greeting,
-						"Lbye": self.Lbye,
-						"greet_bye": self.greeting_bye, 
-						"nicetomeet": self.nicetomeet,
-						"howru": self.how_r_u,
-						"fine": self.fine,
-						"guess": self.guess,
-						"tryagain": self.play,
-						"play": self.play,
-						"nice": self.nice,
-						"neutral": self.setNeutralPosition			
+						"bye": self.greeting,
+						"wave": self.wave,
+						"nicetomeet": self.talk,
+						"howru": self.talk,
+						"fine": self.talk,
+						"guess": self.talk,
+						"tryagain": self.talk,
+						"play": self.talk,
+						"nice": self.talk,
+                                        	"myHead": self.pointHead,
+                                        	"wheresMyHead": self.talk,
+                                        	"wheresUHead": self.talk,
+						"pointHead": self.pointHead,
+						"myEyes": self.pointEyes,
+						"wheresMyEyes": self.talk,
+						"wheresUEyes": self.talk,
+						"pointEyes": self.pointEyes,
+						"myNose": self.pointNose,
+						"wheresMyNose": self.talk,
+						"wheresUNose": self.talk,
+						"pointNose": self.pointNose,
+						"myMouth": self.pointMouth,
+						"wheresMyMouth": self.talk,
+						"wheresUMouth": self.talk,
+						"pointMouth": self.pointMouth,
+						"neutral": self.setNeutralPosition
 					 }
+
 		self.dynamixelMotorsDict = {
 					"neck": self.moveNeck,
 					"rightShoulderR": self.moveRSR,
@@ -65,15 +111,14 @@ class dynamixelManagerNode(object):
 					"leftShoulderP": self.moveLSP,
 					"leftElbowP": self.moveLEP
 				     }
-		
 		return
-	
+
 	#Callbacks
 	def callbackMovements(self, msg):
 		self.movement = msg.data
 		self.changeMovement = True
 		return
-	
+
 	def callbackMotorsPosition(self, msg):
 		self.motorPosition = msg.data
 		return
@@ -82,12 +127,9 @@ class dynamixelManagerNode(object):
 		self.dynamixelMotor = msg.data
 		self.changeMotor = True
 		return
-	
+
 	#Main Movements
-	def setNeutralPosition(self):
-		time.sleep(0.5)
-		self.motorPosition.data = 0.0
-		self.neckPub.publish(self.motorPosition)
+	def setNeutralPosition(self, talkWord):
 		time.sleep(0.5)
 		self.motorPosition.data = 0.1
 		self.rightShoulderRPub.publish(self.motorPosition)
@@ -106,137 +148,26 @@ class dynamixelManagerNode(object):
 		time.sleep(0.5)
 		self.motorPosition.data = 0.0
 		self.leftElbowPPub.publish(self.motorPosition)
-		return
-
-	def play(self):
-		self.stopTalk.data = False
-		self.stopTalkPub.publish(self.stopTalk)
-		self.emotion.data = "talk"
-		self.emotionPub.publish(self.emotion)
-		pygame.mixer.init()
-		pygame.mixer.music.load("/home/pi/Documents/quieresjugar.mp3")
-		pygame.mixer.music.play()
-		while pygame.mixer.music.get_busy() == True:
-    			continue
-		self.stopTalk.data = True
-		self.stopTalkPub.publish(self.stopTalk)
-		return
-				
-	def guess(self):
-		self.stopTalk.data = False
-		self.stopTalkPub.publish(self.stopTalk)
-		self.emotion.data = "talk"
-		self.emotionPub.publish(self.emotion)
-		pygame.mixer.init()
-		pygame.mixer.music.load("/home/pi/Documents/adivina.mp3")
-		pygame.mixer.music.play()
-		while pygame.mixer.music.get_busy() == True:
-    			continue
-		self.stopTalk.data = True
-		self.stopTalkPub.publish(self.stopTalk)
-		return
-
-	def fine(self):
-		self.stopTalk.data = False
-		self.stopTalkPub.publish(self.stopTalk)
-		self.emotion.data = "talk"
-		self.emotionPub.publish(self.emotion)
-		pygame.mixer.init()
-		pygame.mixer.music.load("/home/pi/Documents/estoymuybien.mp3")
-		pygame.mixer.music.play()
-		while pygame.mixer.music.get_busy() == True:
-    			continue
-		self.stopTalk.data = True
-		self.stopTalkPub.publish(self.stopTalk)
-		return
-
-	def nice(self):
-		self.stopTalk.data = False
-		self.stopTalkPub.publish(self.stopTalk)
-		self.emotion.data = "talk"
-		self.emotionPub.publish(self.emotion)
-		pygame.mixer.init()
-		pygame.mixer.music.load("/home/pi/Documents/muybien.mp3")
-		pygame.mixer.music.play()
-		while pygame.mixer.music.get_busy() == True:
-    			continue
-		self.stopTalk.data = True
-		self.stopTalkPub.publish(self.stopTalk)
-		return
-		
-	def tryagain(self):
-		self.stopTalk.data = False
-		self.stopTalkPub.publish(self.stopTalk)
-		self.emotion.data = "talk"
-		self.emotionPub.publish(self.emotion)
-		pygame.mixer.init()
-		pygame.mixer.music.load("/home/pi/Documents/intentaotravez.mp3")
-		pygame.mixer.music.play()
-		while pygame.mixer.music.get_busy() == True:
-    			continue
-		self.stopTalk.data = True
-		self.stopTalkPub.publish(self.stopTalk)
-		return
-
-	def how_r_u(self):
-		self.stopTalk.data = False
-		self.stopTalkPub.publish(self.stopTalk)
-		self.emotion.data = "talk"
-		self.emotionPub.publish(self.emotion)
-		pygame.mixer.init()
-		pygame.mixer.music.load("/home/pi/Documents/comoestas.mp3")
-		pygame.mixer.music.play()
-		while pygame.mixer.music.get_busy() == True:
-    			continue
-		self.stopTalk.data = True
-		self.stopTalkPub.publish(self.stopTalk)
-		return
-
-	def nicetomeet(self):
-		self.stopTalk.data = False
-		self.stopTalkPub.publish(self.stopTalk)
-		self.emotion.data = "talk"
-		self.emotionPub.publish(self.emotion)
-		pygame.mixer.init()
-		pygame.mixer.music.load("/home/pi/Documents/mealegro.mp3")
-		pygame.mixer.music.play()
-		while pygame.mixer.music.get_busy() == True:
-    			continue
-		self.stopTalk.data = True
-		self.stopTalkPub.publish(self.stopTalk)
-		return
-
-	def Lbye(self):
-                time.sleep(0.5)
-                self.motorPosition.data = -0.2
-                self.leftShoulderRPub.publish(self.motorPosition)
 		time.sleep(0.5)
-		self.motorPosition.data = 1.5
-		self.leftShoulderPPub.publish(self.motorPosition)
-		time.sleep(0.5)
-		self.motorPosition.data = 0.5
-		self.leftElbowPPub.publish(self.motorPosition)
+		self.motorPosition.data = 0.0
+		self.neckPub.publish(self.motorPosition)
+		return
+
+	def talk(self, talkWord):
 		self.stopTalk.data = False
 		self.stopTalkPub.publish(self.stopTalk)
 		self.emotion.data = "talk"
 		self.emotionPub.publish(self.emotion)
 		pygame.mixer.init()
-		pygame.mixer.music.load("/home/pi/Documents/despedir.mp3")
+		pygame.mixer.music.load("/home/pi/Documents/" + talkWord + ".mp3")
 		pygame.mixer.music.play()
 		while pygame.mixer.music.get_busy() == True:
-			time.sleep(0.5)
-			self.motorPosition.data = 0.5
-			self.leftShoulderRPub.publish(self.motorPosition)
-			time.sleep(0.5)
-			self.motorPosition.data = 0.0
-			self.leftShoulderRPub.publish(self.motorPosition)
     			continue
 		self.stopTalk.data = True
 		self.stopTalkPub.publish(self.stopTalk)
-		self.setNeutralPosition()
 		return
-		
-	def greeting_bye(self):
+
+	def wave(self, talkWord):
                 time.sleep(0.5)
                 self.motorPosition.data = -0.2
                 self.leftShoulderRPub.publish(self.motorPosition)
@@ -258,10 +189,10 @@ class dynamixelManagerNode(object):
                 time.sleep(0.5)
                 self.motorPosition.data = 0.0
                 self.leftShoulderRPub.publish(self.motorPosition)
-		self.setNeutralPosition()
+		self.setNeutralPosition("")
 		return
 
-	def greeting(self):
+	def greeting(self, talkWord):
                 time.sleep(0.5)
                 self.motorPosition.data = -0.2
                 self.leftShoulderRPub.publish(self.motorPosition)
@@ -276,7 +207,7 @@ class dynamixelManagerNode(object):
 		self.emotion.data = "talk"
 		self.emotionPub.publish(self.emotion)
 		pygame.mixer.init()
-		pygame.mixer.music.load("/home/pi/Documents/saludo.mp3")
+		pygame.mixer.music.load("/home/pi/Documents/" + talkWord + ".mp3")
 		pygame.mixer.music.play()
 		while pygame.mixer.music.get_busy() == True:
 			time.sleep(0.5)
@@ -288,8 +219,110 @@ class dynamixelManagerNode(object):
     			continue
 		self.stopTalk.data = True
 		self.stopTalkPub.publish(self.stopTalk)
-		self.setNeutralPosition()
+		self.setNeutralPosition("")
 		return
+
+        def pointHead(self, talkWord):
+                time.sleep(0.5)
+                self.motorPosition.data = -0.3
+                self.leftShoulderRPub.publish(self.motorPosition)
+                time.sleep(0.5)
+                self.motorPosition.data = 1.4
+                self.leftShoulderPPub.publish(self.motorPosition)
+                time.sleep(0.5)
+                self.motorPosition.data = 0.9
+                self.leftElbowPPub.publish(self.motorPosition)
+                self.stopTalk.data = False
+                self.stopTalkPub.publish(self.stopTalk)
+                self.emotion.data = "talk"
+                self.emotionPub.publish(self.emotion)
+                pygame.mixer.init()
+                pygame.mixer.music.load("/home/pi/Documents/" + talkWord + ".mp3")
+                pygame.mixer.music.play()
+                while pygame.mixer.music.get_busy() == True:
+                        continue
+                self.stopTalk.data = True
+                self.stopTalkPub.publish(self.stopTalk)
+                self.setNeutralPosition("")
+                return
+
+        def pointEyes(self, talkWord):
+                time.sleep(0.5)
+                self.motorPosition.data = -0.5
+                self.leftShoulderRPub.publish(self.motorPosition)
+                time.sleep(0.5)
+                self.motorPosition.data = 1.3
+                self.leftShoulderPPub.publish(self.motorPosition)
+                time.sleep(0.5)
+                self.motorPosition.data = 0.9
+                self.leftElbowPPub.publish(self.motorPosition)
+                self.stopTalk.data = False
+                self.stopTalkPub.publish(self.stopTalk)
+                self.emotion.data = "talk"
+                self.emotionPub.publish(self.emotion)
+                pygame.mixer.init()
+                pygame.mixer.music.load("/home/pi/Documents/" + talkWord + ".mp3")
+                pygame.mixer.music.play()
+                while pygame.mixer.music.get_busy() == True:
+                        continue
+                self.stopTalk.data = True
+                self.stopTalkPub.publish(self.stopTalk)
+                self.setNeutralPosition("")
+                return
+
+        def pointNose(self, talkWord):
+		time.sleep(0.5)
+                self.motorPosition.data = -0.8
+                self.neckPub.publish(self.motorPosition)
+		time.sleep(0.5)
+                self.motorPosition.data = -0.7
+                self.leftShoulderRPub.publish(self.motorPosition)
+                time.sleep(0.5)
+                self.motorPosition.data = 1.2
+                self.leftShoulderPPub.publish(self.motorPosition)
+                time.sleep(0.5)
+                self.motorPosition.data = 0.9
+                self.leftElbowPPub.publish(self.motorPosition)
+                self.stopTalk.data = False
+                self.stopTalkPub.publish(self.stopTalk)
+                self.emotion.data = "talk"
+                self.emotionPub.publish(self.emotion)
+                pygame.mixer.init()
+                pygame.mixer.music.load("/home/pi/Documents/" + talkWord + ".mp3")
+                pygame.mixer.music.play()
+                while pygame.mixer.music.get_busy() == True:
+                        continue
+                self.stopTalk.data = True
+                self.stopTalkPub.publish(self.stopTalk)
+                self.setNeutralPosition("")
+                return
+
+        def pointMouth(self, talkWord):
+                time.sleep(0.5)
+                self.motorPosition.data = -0.6
+                self.neckPub.publish(self.motorPosition)
+                time.sleep(0.5)
+                self.motorPosition.data = -0.8
+                self.leftShoulderRPub.publish(self.motorPosition)
+                time.sleep(0.5)
+                self.motorPosition.data = 1.0
+                self.leftShoulderPPub.publish(self.motorPosition)
+                time.sleep(0.5)
+                self.motorPosition.data = 0.9
+                self.leftElbowPPub.publish(self.motorPosition)
+                self.stopTalk.data = False
+                self.stopTalkPub.publish(self.stopTalk)
+                self.emotion.data = "talk"
+                self.emotionPub.publish(self.emotion)
+                pygame.mixer.init()
+                pygame.mixer.music.load("/home/pi/Documents/" + talkWord + ".mp3")
+                pygame.mixer.music.play()
+                while pygame.mixer.music.get_busy() == True:
+                        continue
+                self.stopTalk.data = True
+                self.stopTalkPub.publish(self.stopTalk)
+                self.setNeutralPosition("")
+                return
 
 	#Dynamixel Motors
 	def moveNeck(self):
@@ -325,15 +358,15 @@ class dynamixelManagerNode(object):
 		rospy.loginfo("[%s] dynamixel motor manager node started ok", self.name)
 		while not (rospy.is_shutdown()):
 			if self.changeMovement:
-				self.mainMovementsDict[self.movement]()
+				self.mainMovementsDict[self.movement](self.wordsDict[self.movement])
 				self.changeMovement = False
 			elif self.changeMotor:
 				self.dynamixelMotorsDict[self.dynamixelMotor]()
 				self.changeMotor = False
 		return
-		
+
 
 if __name__=='__main__':
-	dynamixelManager = dynamixelManagerNode("dynamixelManager")		
+	dynamixelManager = dynamixelManagerNode("dynamixelManager")
 	dynamixelManager.main()
 
