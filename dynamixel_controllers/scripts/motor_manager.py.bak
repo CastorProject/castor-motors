@@ -18,6 +18,8 @@ class dynamixelManagerNode(object):
 
 	def initSubscribers(self):
 		self.movementSub = rospy.Subscriber('/movements', String, self.callbackMovements)
+		self.motorPositionSub = rospy.Subscriber('/dMotorsPosition', Float64, self.callbackMotorsPosition)
+		self.dynamixelMotorSub = rospy.Subscriber('/dMotors', String, self.callbackDynamixelMotor)
 		return
 
 	def initPublishers(self):
@@ -115,12 +117,31 @@ class dynamixelManagerNode(object):
 						"name": self.talk, #cambiar
 						"neutral": self.setNeutralPosition
 					 }
+
+		self.dynamixelMotorsDict = {
+					"neck": self.moveNeck,
+					"rightShoulderR": self.moveRSR,
+					"rightShoulderP": self.moveRSP,
+					"rightElbowP": self.moveREP,
+					"leftShoulderR": self.moveLSR,
+					"leftShoulderP": self.moveLSP,
+					"leftElbowP": self.moveLEP
+				     }
 		return
 
 	#Callbacks
 	def callbackMovements(self, msg):
 		self.movement = msg.data
 		self.changeMovement = True
+		return
+
+	def callbackMotorsPosition(self, msg):
+		self.motorPosition = msg.data
+		return
+
+	def callbackDynamixelMotor(self, msg):
+		self.dynamixelMotor = msg.data
+		self.changeMotor = True
 		return
 
 	#Main Movements
@@ -382,6 +403,35 @@ class dynamixelManagerNode(object):
 		self.setNeutralPosition("")
                 return
 
+	#Dynamixel Motors
+	def moveNeck(self):
+		self.neckPub.publish(self.motorPosition)
+		return
+
+	def moveRSR(self):
+		self.rightShoulderRPub.publish(self.motorPosition)
+		return
+
+	def moveRSP(self):
+		self.rightShoulderPPub.publish(self.motorPosition)
+		return
+
+	def moveREP(self):
+		self.rightElbowPPub.publish(self.motorPosition)
+		return
+
+	def moveLSR(self):
+		self.leftShoulderRPub.publish(self.motorPosition)
+		return
+
+	def moveLSP(self):
+		self.leftShoulderPPub.publish(self.motorPosition)
+		return
+
+	def moveLEP(self):
+		self.leftElbowPPub.publish(self.motorPosition)
+		return
+
 	#Main
 	def main(self):
 		rospy.loginfo("[%s] dynamixel motor manager node started ok", self.name)
@@ -389,6 +439,9 @@ class dynamixelManagerNode(object):
 			if self.changeMovement:
 				self.mainMovementsDict[self.movement](self.wordsDict[self.movement])
 				self.changeMovement = False
+			elif self.changeMotor:
+				self.dynamixelMotorsDict[self.dynamixelMotor]()
+				self.changeMotor = False
 		return
 
 
