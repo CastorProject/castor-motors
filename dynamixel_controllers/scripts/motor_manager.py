@@ -75,7 +75,10 @@ class dynamixelManagerNode(object):
 					"wheresUMouth": "dondeestatuboca",
 					"pointMouth": "senialarboca",
 					"name": "nombre", #cambiar
-					"neutral": ""
+					"neutral": "",
+					"eyes" : "misojos",
+					"button" : "devuelveboton",
+					"nose" : "lanariz"
 				 }
 
 		self.mainMovementsDict = {
@@ -113,7 +116,10 @@ class dynamixelManagerNode(object):
 						"wheresUMouth": self.talk,
 						"pointMouth": self.pointMouth,
 						"name": self.talk, #cambiar
-						"neutral": self.setNeutralPosition
+						"neutral": self.setNeutralPosition,
+						"eyes" : self.talk,
+						"button" : self.talk,
+						"nose" : self.talk
 					 }
 		return
 
@@ -231,7 +237,7 @@ class dynamixelManagerNode(object):
 			pygame.mixer.music.play()
 			while pygame.mixer.music.get_busy() == True:
 				time.sleep(0.5)
-				self.motorPosition.data = 0.5
+				self.motorPosition.data = 0.8
 				self.rightShoulderRPub.publish(self.motorPosition)
 				time.sleep(0.5)
 				self.motorPosition.data = 0.0
