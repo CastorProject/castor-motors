@@ -3,13 +3,12 @@
 	<!--dynamixel launcher/-->
 	<include file="$(find dynamixel_controllers)/launch/controller_manager.launch"/>
 	<include file="$(find dynamixel_controllers)/launch/controller.launch"/>
-	
+
 	<!--ros-onohat servo controllers launcher/-->
 	<include file="$(find opsoro_workbench_onohat)/launch/onohat_base.launch"/>
-	
-	<node name="eyes_behavior" pkg="castor_eyes" type="eyes_manager.py"/>	
+
+	<node name="eyes_behavior" pkg="castor_eyes" type="eyes_manager.py"/>
 	<node name="facial_behavior" pkg="botbuilder_workbench" type="face_motor.py"/>
 	<node name="motor_behavior" pkg="dynamixel_controllers" type="motor_manager.py"/>
-	<node name="telegram" pkg="castor_telegram" type="telegram_interface.py"/>
-	<node name="touchSensors" pkg="opsoro_workbench_onohat" type="robot_sensors.py"/>
+	<node name="speaker" pkg="castor_speaker" type="speaker.py"/>
 </launch>

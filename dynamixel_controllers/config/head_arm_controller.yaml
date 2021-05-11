@@ -12,9 +12,9 @@ neck_joint_controller:
     joint_speed: 2.0
     motor:
         id: 1
-        init: 350
-        min: 50
-        max: 650
+        init: 630
+        min: 300
+        max: 970
 #------------------right arm actuation---------------------
 right_shoulder_roll_controller:
     controller:
@@ -25,9 +25,9 @@ right_shoulder_roll_controller:
     joint_speed: 2.0
     motor:
         id: 2
-        init: 700
-        min: 600  
-        max: 900
+        init: 720
+        min: 520
+        max: 1023
 
 right_shoulder_pitch_controller:
     controller:
@@ -38,9 +38,9 @@ right_shoulder_pitch_controller:
     joint_speed: 2.0
     motor:
         id: 3
-        init: 580
-        min: 240
-        max: 700
+        init: 300
+        min: 0
+        max: 480
 
 right_elbow_pitch_controller:
     controller:
@@ -51,9 +51,9 @@ right_elbow_pitch_controller:
     joint_speed: 2.0
     motor:
         id: 4
-        init: 275
-        min: 200
-        max: 350
+        init: 300
+        min: 0
+        max: 480
 
 #------------------left arm actuation---------------------
 left_shoulder_roll_controller:
@@ -65,9 +65,9 @@ left_shoulder_roll_controller:
     joint_speed: 2.0
     motor:
         id: 5
-        init: 790
-        min: 550  
-        max: 900
+        init: 780
+        min: 390
+        max: 800
 
 left_shoulder_pitch_controller:
     controller:
@@ -78,9 +78,10 @@ left_shoulder_pitch_controller:
     joint_speed: 2.0
     motor:
         id: 6
-        init: 640
-        min: 530
-        max: 991
+        init: 480
+        min: 300
+        max: 1023
+
 left_elbow_pitch_controller:
     controller:
         package: dynamixel_controllers
@@ -90,7 +91,6 @@ left_elbow_pitch_controller:
     joint_speed: 2.0
     motor:
         id: 7
-        init: 570
-        min: 350
-        max: 900
-
+        init: 650
+        min: 270
+        max: 1023
